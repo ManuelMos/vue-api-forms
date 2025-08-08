@@ -1,28 +1,38 @@
+<template>
+  <component :is="data.type" v-on="listeners">
+    {{ data.text }}
+  </component>
+</template>
+
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { defineComponent, computed, PropType } from "vue";
 import { ControlData } from "@/types";
 
-@Component
-export default class Control extends Vue {
-  @Prop() private data!: ControlData;
+export default defineComponent({
+  name: "Control",
+  props: {
+    data: {
+      type: Object as PropType<ControlData>,
+      required: true,
+    },
+  },
+  setup(props) {
+    const listeners = computed(() => {
+      const on: Record<string, unknown> = {};
+      if (props.data.click) {
+        on.click = new Function(
+          props.data.click.arguments,
+          props.data.click.body
+        );
+      }
+      return on;
+    });
 
-  render(createElement: Function) {
-    const on = {};
-    if (this.data.click) {
-      on.click = new Function(this.data.click.arguments, this.data.click.body);
-    }
-    return createElement(
-      this.data.type,
-      {
-        on: on
-      },
-      this.data.text
-    );
-  }
-}
+    return { listeners };
+  },
+});
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h3 {
   margin: 40px 0 0;
