@@ -6,15 +6,15 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
+import { defineComponent } from "vue";
 import Control from "./components/Control.vue";
 
-@Component({
+export default defineComponent({
+  name: "App",
   components: {
     Control
   },
-
-  data: function() {
+  data() {
     return {
       button: {
         type: "button",
@@ -25,14 +25,12 @@ import Control from "./components/Control.vue";
         type: "div",
         text: "div of the beast"
       }
-    }
+    };
   },
-
   methods: {
     yeah() {
       alert("yeah");
     }
   }
-})
-export default class App extends Vue {}
+});
 </script>
