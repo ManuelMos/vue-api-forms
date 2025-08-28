@@ -1,25 +1,29 @@
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { defineComponent, PropType, h } from "vue";
 import { ControlData } from "@/types";
 
-@Component
-export default class Control extends Vue {
-  @Prop() private data!: ControlData;
-
-  render(createElement: Function) {
-    const on: any = {};
-    if (this.data.click) {
-      on.click = new Function(this.data.click.arguments, this.data.click.body);
+export default defineComponent({
+  name: "ControlComponent",
+  props: {
+    data: {
+      type: Object as PropType<ControlData>,
+      required: true
     }
-    return createElement(
+  },
+  render() {
+    const on: Record<string, () => void> = {};
+    if (this.data.click) {
+      on.click = new Function(this.data.click.arguments, this.data.click.body) as () => void;
+    }
+    return h(
       this.data.type,
       {
-        on: on
+        onClick: on.click
       },
       this.data.text
     );
   }
-}
+});
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
