@@ -1,5 +1,8 @@
 export interface ControlData {
     type: string;
     text: string;
-    click: Function;
+    click?: {
+        arguments: string;
+        body: string;
+    };
 }

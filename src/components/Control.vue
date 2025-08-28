@@ -7,7 +7,7 @@ export default class Control extends Vue {
   @Prop() private data!: ControlData;
 
   render(createElement: Function) {
-    const on = {};
+    const on: any = {};
     if (this.data.click) {
       on.click = new Function(this.data.click.arguments, this.data.click.body);
     }
